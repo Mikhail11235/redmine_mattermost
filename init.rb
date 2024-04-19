@@ -1,6 +1,6 @@
 require 'redmine'
 
-require_dependency 'redmine_mattermost/listener'
+require File.expand_path('../lib/redmine_mattermost/listener', __FILE__)
 
 Redmine::Plugin.register :redmine_mattermost do
 	name 'Redmine Mattermost'
@@ -10,7 +10,7 @@ Redmine::Plugin.register :redmine_mattermost do
 	description 'Mattermost chat integration'
 	version '0.6'
 
-	requires_redmine :version_or_higher => '2.0.0'
+	requires_redmine :version_or_higher => '5.1.2'
 
 	settings \
 		:default => {
@@ -23,8 +23,7 @@ Redmine::Plugin.register :redmine_mattermost do
 		:partial => 'settings/mattermost_settings'
 end
 
-ActiveSupport::Reloader.to_prepare do
-	require_dependency 'issue'
+Rails.application.config.after_initialize do
 	unless Issue.included_modules.include? RedmineMattermost::IssuePatch
 		Issue.send(:include, RedmineMattermost::IssuePatch)
 	end
