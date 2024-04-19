@@ -139,7 +139,6 @@ module RedmineMattermost
 			}
 
 			params[:username] = username if username
-			
 
 			params[:attachments] = [attachment] if attachment
 
